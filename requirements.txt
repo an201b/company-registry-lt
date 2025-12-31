@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pydantic-settings
+jinja2
+python-multipart
+requests
+pandas
+apscheduler
+pandas        # Для быстрого чтения и обработки CSV
