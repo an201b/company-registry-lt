@@ -9,3 +9,4 @@ requests
 pandas
 apscheduler
 pandas        # Для быстрого чтения и обработки CSV
+aiosqlite		#Без неё SQLAlchemy не может подключиться к базе асинхронно.

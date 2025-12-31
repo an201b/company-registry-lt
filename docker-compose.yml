@@ -1,1 +1,30 @@
- 
+version: '3.8'
+
+services:
+  registry-app:
+    # Собираем образ из текущей папки
+    build: .
+    container_name: company-registry-lt
+    
+    # Настраиваем перезапуск
+    # unless-stopped = всегда перезапускать, кроме случая, когда мы сами нажали stop
+    restart: unless-stopped
+    
+    # Порты: Слева (8010) - порт на вашем ПК, Справа (8010) - внутри контейнера
+    ports:
+      - "8010:8010"
+    
+    # Проброс папок (Volumes)
+    volumes:
+      # Самое важное: сохраняем базу данных на вашем жестком диске
+      # Файл C:\...\data\registry.db будет виден внутри как /app/data/registry.db
+      - ./data:/app/data
+      
+      # (Опционально) Раскомментируйте, если хотите менять HTML без пересборки образа
+      - ./app/templates:/app/templates
+      - ./app/static:/app/static
+
+    # Настройки среды
+    environment:
+      # Устанавливаем часовой пояс Литвы, чтобы планировщик (Cron) работал правильно
+      - TZ=Europe/Vilnius

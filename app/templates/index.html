@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        
+        <div class="card p-4 mb-4">
+            <h4 class="mb-3">Поиск юридического лица</h4>
+            <form action="/" method="get" class="d-flex gap-2">
+                <input type="text" name="code" class="form-control form-control-lg" 
+                       placeholder="Введите код (например 302528185)" 
+                       value="{{ search_code if search_code else '' }}" required>
+                <button type="submit" class="btn btn-primary btn-lg">Найти</button>
+            </form>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-danger text-center">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if company %}
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                Результат поиска
+            </div>
+            <div class="card-body">
+                <h3 class="card-title text-primary">{{ company.name }}</h3>
+                <h6 class="card-subtitle mb-2 text-muted">Код: {{ company.code }}</h6>
+                
+                <hr>
+                
+                <dl class="row">
+                    <dt class="col-sm-4">Адрес:</dt>
+                    <dd class="col-sm-8">{{ company.address }}</dd>
+
+                    <dt class="col-sm-4">Статус:</dt>
+                    <dd class="col-sm-8">
+                        {% if company.status_code == 0 %}
+                            <span class="badge bg-success">Действует</span>
+                        {% else %}
+                            <span class="badge bg-danger">{{ company.status_name }}</span>
+                        {% endif %}
+                        <small class="text-muted ms-2">(с {{ company.status_date_from }})</small>
+                    </dd>
+
+                    <dt class="col-sm-4">Правовая форма:</dt>
+                    <dd class="col-sm-8">{{ company.legal_form_name }}</dd>
+
+                    <dt class="col-sm-4">Дата регистрации:</dt>
+                    <dd class="col-sm-8">{{ company.registration_date }}</dd>
+                </dl>
+                
+                <div class="alert alert-light border mt-3 mb-0 text-center">
+                    <small>Данные обновлены в реестре: {{ company.data_updated_at }}</small>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
