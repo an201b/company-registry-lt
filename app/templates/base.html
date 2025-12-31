@@ -16,7 +16,11 @@
         <div class="container">
             <a class="navbar-brand" href="/">🇱🇹 {{ tr.app_title }}</a>
             
-            <div class="d-flex">
+            <div class="d-flex align-items-center gap-3">
+				<a href="/settings" class="text-white text-decoration-none opacity-75 hover-opacity-100">
+					⚙️ {{ tr.menu_settings }}
+				</a>
+				
                 <div class="dropdown">
                     <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         🌐 {{ langs[current_lang].lang_name }}

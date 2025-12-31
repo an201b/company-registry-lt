@@ -25,7 +25,14 @@ TRANSLATIONS = {
         "tbl_code": "Kodas",
         "tbl_address": "Adresas",
         "tbl_status": "Statusas",
-        "btn_details": "Plačiau"
+        "btn_details": "Plačiau",
+        "lbl_pvm": "PVM mokėtojo kodas",
+        "lbl_pvm_status": "PVM statusas",
+        "val_is_pvm": "Yra PVM mokėtojas",
+        "val_not_pvm": "Nėra PVM mokėtojas",
+        "menu_settings": "Nustatymai"
+        
+        
     },
     "en": {
         "app_title": "Lithuanian Company Registry",
@@ -50,7 +57,12 @@ TRANSLATIONS = {
         "tbl_code": "Code",
         "tbl_address": "Address",
         "tbl_status": "Status",
-        "btn_details": "Details"
+        "btn_details": "Details",
+        "lbl_pvm": "VAT Code (PVM)",
+        "lbl_pvm_status": "VAT Status",
+        "val_is_pvm": "VAT Payer",
+        "val_not_pvm": "Not VAT Payer",
+        "menu_settings": "Settings"
     },
     "pl": {
         "app_title": "Rejestr podmiotów Litwy",
@@ -75,7 +87,12 @@ TRANSLATIONS = {
         "tbl_code": "Kod",
         "tbl_address": "Adres",
         "tbl_status": "Status",
-        "btn_details": "Szczegóły"
+        "btn_details": "Szczegóły",
+        "lbl_pvm": "Kod VAT (PVM)",
+        "lbl_pvm_status": "Status VAT",
+        "val_is_pvm": "Płatnik VAT",
+        "val_not_pvm": "Nie jest płatnikiem VAT",
+        "menu_settings": "Ustawienia"
     },
     "be": {
         "app_title": "Рэестр кампаній Літвы",
@@ -100,7 +117,12 @@ TRANSLATIONS = {
         "tbl_code": "Код",
         "tbl_address": "Адрас",
         "tbl_status": "Статус",
-        "btn_details": "Падрабязней"
+        "btn_details": "Падрабязней",
+        "lbl_pvm": "Код ПДВ (PVM)", 
+        "lbl_pvm_status": "Статус ПДВ", 
+        "val_is_pvm": "Платнік ПДВ", 
+        "val_not_pvm": "Не плацельшчык ПДВ",
+        "menu_settings": "Налады"
     },
     "ru": {
         "app_title": "Реестр компаний Литвы",
@@ -125,6 +147,11 @@ TRANSLATIONS = {
         "tbl_code": "Код",
         "tbl_address": "Адрес",
         "tbl_status": "Статус",
-        "btn_details": "Подробнее"
+        "btn_details": "Подробнее",
+        "lbl_pvm": "Код НДС (PVM)",
+        "lbl_pvm_status": "Статус НДС",
+        "val_is_pvm": "Плательщик НДС",
+        "val_not_pvm": "Не плательщик НДС",
+        "menu_settings": "Настройки"
     }
 }

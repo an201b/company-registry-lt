@@ -5,7 +5,7 @@ from app.core.db import Base
 class Company(Base):
     """
     Модель таблицы компаний.
-    Полностью отражает структуру файла JAR_IREGISTRUOTI.csv
+    Отражает структуру файла JAR + данные об НДС (PVM).
     """
     __tablename__ = "companies"
 
@@ -25,25 +25,31 @@ class Company(Base):
     registration_date = Column(Date, nullable=True)
     
     # --- Правовая форма (UAB, MB, AB...) ---
-    # form_kodas (Код формы, например 310)
+    # form_kodas
     legal_form_code = Column(Integer, nullable=True)
     
-    # form_pavadinimas (Название формы, например 'Uždaroji akcinė bendrovė')
+    # form_pavadinimas
     legal_form_name = Column(String, nullable=True)
     
     # --- Статус (Действует, Банкрот...) ---
-    # stat_kodas (Код статуса, например 0 - Действует)
+    # stat_kodas
     status_code = Column(Integer, index=True, nullable=True)
     
-    # stat_pavadinimas (Название статуса, например 'Teisinis stat neįregistruotas')
+    # stat_pavadinimas
     status_name = Column(String, nullable=True)
     
-    # stat_data_nuo (С какой даты действует этот статус)
+    # stat_data_nuo
     status_date_from = Column(Date, nullable=True)
     
     # --- Метаданные ---
-    # formavimo_data (Дата выгрузки записи из реестра)
+    # formavimo_data
     data_updated_at = Column(Date, nullable=True)
 
+    # --- НОВЫЕ ПОЛЯ (НДС / PVM) ---
+    # Код PVM (например LT100012345611)
+    pvm_code = Column(String, nullable=True, index=True) 
+    # С какого числа является плательщиком
+    pvm_date = Column(Date, nullable=True)
+
     def __repr__(self):
-        return f"<Company(code='{self.code}', name='{self.name}', status='{self.status_name}')>"
+        return f"<Company(code='{self.code}', name='{self.name}', pvm='{self.pvm_code}')>"

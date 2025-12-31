@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h3 class="mb-4">⚙️ Настройки источников данных</h3>
+            
+            {% if message %}
+            <div class="alert alert-success">{{ message }}</div>
+            {% endif %}
+
+            <form action="/settings" method="post">
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Ссылка на реестр (JAR)</label>
+                    <input type="text" name="jar_url" class="form-control" 
+                           value="{{ settings['jar_url'].value if settings['jar_url'] else '' }}">
+                    <div class="form-text">CSV файл с сайта registrucentras.lt</div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Ссылка на плательщиков НДС (VMI)</label>
+                    <input type="text" name="pvm_url" class="form-control" 
+                           value="{{ settings['pvm_url'].value if settings['pvm_url'] else '' }}">
+                    <div class="form-text">
+                        CSV файл с сайта VMI или data.gov.lt. <br>
+                        Текущая ошибка 404 означает, что ссылку нужно обновить вручную.
+                        <a href="https://data.gov.lt/dataset/pridetinies-vertes-mokescio-moketoju-duomenys" target="_blank">Найти новую ссылку на data.gov.lt</a>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="/" class="btn btn-secondary">Назад</a>
+                    <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+                </div>
+            </form>
+            
+            <hr class="my-4">
+            
+            <h5>Управление</h5>
+            <p>Вы можете запустить принудительное обновление базы прямо сейчас (с текущими ссылками).</p>
+            <button onclick="forceUpdate()" class="btn btn-warning">🔄 Запустить обновление данных сейчас</button>
+            <span id="updateStatus" class="ms-2 text-muted"></span>
+        </div>
+    </div>
+</div>
+
+<script>
+async function forceUpdate() {
+    const status = document.getElementById('updateStatus');
+    status.innerText = "Запуск...";
+    try {
+        const response = await fetch('/api/v1/force-update', { method: 'POST' });
+        const data = await response.json();
+        status.innerText = "✅ " + data.message;
+        status.classList.remove('text-muted');
+        status.classList.add('text-success');
+    } catch (e) {
+        status.innerText = "❌ Ошибка запуска";
+        status.classList.add('text-danger');
+    }
+}
+</script>
+{% endblock %}

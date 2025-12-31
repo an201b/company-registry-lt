@@ -1,16 +1,32 @@
-# company-registry-lt\app\main.py
 import uvicorn
-# ВАЖНО: Добавил BackgroundTasks в список импортов ниже
 from fastapi import FastAPI, BackgroundTasks
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.background import BackgroundScheduler
+from sqlalchemy import select
 
 from app.core.db import async_engine, Base
+# Импортируем модели, чтобы они зарегистрировались в Base metadata
 from app.models import company
+from app.models.settings import Setting
 from app.api.v1.endpoints import router as api_router
 from app.web.views import router as web_router
 from app.services.registry_importer import run_full_import
+
+# Дефолтные настройки
+DEFAULT_SETTINGS = [
+    {
+        "key": "jar_url", 
+        "value": "https://www.registrucentras.lt/aduomenys/?byla=JAR_IREGISTRUOTI.csv",
+        "description": "Ссылка на файл реестра (JAR)"
+    },
+    {
+        "key": "pvm_url", 
+        # ОБНОВЛЕНО: Вставили рабочую ссылку data.gov.lt
+        "value": "https://get.data.gov.lt/datasets/gov/vmi/pvm_moketojai/Moketoja_duomenys_pvm_moketojai.csv",
+        "description": "Ссылка на плательщиков НДС (VMI)"
+    }
+]
 
 # --- НАСТРОЙКА ПЛАНИРОВЩИКА ---
 scheduler = BackgroundScheduler()
@@ -22,6 +38,25 @@ async def lifespan(app: FastAPI):
     
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        
+        # --- ПРОВЕРКА И СОЗДАНИЕ НАСТРОЕК ---
+        from sqlalchemy.orm import Session
+        
+        # Функция для запуска внутри sync-контекста
+        def init_settings(connection):
+            session = Session(bind=connection)
+            for item in DEFAULT_SETTINGS:
+                existing = session.get(Setting, item["key"])
+                if not existing:
+                    print(f"⚙️ [CONFIG] Создаю настройку по умолчанию: {item['key']}")
+                    new_setting = Setting(key=item["key"], value=item["value"], description=item["description"])
+                    session.add(new_setting)
+            session.commit()
+            session.close()
+
+        await conn.run_sync(init_settings)
+        # ------------------------------------
+        
     print("✅ [DB] Таблицы проверены.")
 
     # Планируем задачу на 04:00 утра

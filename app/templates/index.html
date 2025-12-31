@@ -51,6 +51,16 @@
 
                             <dt class="col-sm-3">{{ tr.lbl_reg_date }}:</dt>
                             <dd class="col-sm-9">{{ company.registration_date }}</dd>
+							
+							<dt class="col-sm-3">{{ tr.lbl_pvm }}:</dt>
+							<dd class="col-sm-9">
+								{% if company.pvm_code %}
+									<span class="badge bg-info text-dark">{{ company.pvm_code }}</span>
+									<span class="text-success ms-2">✔ {{ tr.val_is_pvm }}</span>
+								{% else %}
+									<span class="text-muted">– {{ tr.val_not_pvm }}</span>
+								{% endif %}
+							</dd>
                         </dl>
                         <div class="alert alert-light border mt-3 mb-0 text-center">
                             <small>{{ tr.last_update }} {{ company.data_updated_at }}</small>
