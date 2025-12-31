@@ -1,0 +1,130 @@
+# company-registry-lt/app/core/translations.py
+# app/core/translations.py
+
+TRANSLATIONS = {
+    "lt": {
+        "app_title": "Lietuvos įmonių registras",
+        "search_title": "Juridinio asmens paieška",
+        "placeholder": "Įveskite kodą, pavadinimą ar adresą",  # Обновлено
+        "btn_find": "Ieškoti",
+        "not_found": "Įmonė su kodu '{}' nerasta.",
+        "res_title": "Paieškos rezultatas",
+        "lbl_code": "Kodas",
+        "lbl_address": "Adresas",
+        "lbl_status": "Statusas",
+        "lbl_form": "Teisinė forma",
+        "lbl_reg_date": "Registravimo data",
+        "footer": "Duomenis teikia VĮ Registrų centras",
+        "status_active": "Veikia",
+        "last_update": "Duomenys atnaujinti registre:",
+        "lang_name": "Lietuvių",
+        # --- НОВЫЕ КЛЮЧИ ---
+        "found_many": "Rasta įrašų: {}. Rodoma pirmieji 50. Patikslinkite paiešką.",
+        "found_one": "Rasta 1 įmonė",
+        "tbl_name": "Pavadinimas",
+        "tbl_code": "Kodas",
+        "tbl_address": "Adresas",
+        "tbl_status": "Statusas",
+        "btn_details": "Plačiau"
+    },
+    "en": {
+        "app_title": "Lithuanian Company Registry",
+        "search_title": "Legal Entity Search",
+        "placeholder": "Enter code, name or address",  # Обновлено
+        "btn_find": "Search",
+        "not_found": "Company with code '{}' not found.",
+        "res_title": "Search Result",
+        "lbl_code": "Code",
+        "lbl_address": "Address",
+        "lbl_status": "Status",
+        "lbl_form": "Legal Form",
+        "lbl_reg_date": "Registration Date",
+        "footer": "Data provided by State Enterprise Centre of Registers",
+        "status_active": "Active",
+        "last_update": "Data updated in registry:",
+        "lang_name": "English",
+        # --- НОВЫЕ КЛЮЧИ ---
+        "found_many": "Found {} records. Showing first 50. Please refine search.",
+        "found_one": "1 company found",
+        "tbl_name": "Name",
+        "tbl_code": "Code",
+        "tbl_address": "Address",
+        "tbl_status": "Status",
+        "btn_details": "Details"
+    },
+    "pl": {
+        "app_title": "Rejestr podmiotów Litwy",
+        "search_title": "Wyszukiwanie podmiotu",
+        "placeholder": "Wpisz kod, nazwę lub adres",  # Обновлено
+        "btn_find": "Szukaj",
+        "not_found": "Nie znaleziono firmy o kodzie '{}'.",
+        "res_title": "Wynik wyszukiwania",
+        "lbl_code": "Kod",
+        "lbl_address": "Adres",
+        "lbl_status": "Status",
+        "lbl_form": "Forma prawna",
+        "lbl_reg_date": "Data rejestracji",
+        "footer": "Dane dostarczone przez Centrum Rejestrów",
+        "status_active": "Aktywny",
+        "last_update": "Dane zaktualizowane w rejestrze:",
+        "lang_name": "Polski",
+        # --- НОВЫЕ КЛЮЧИ ---
+        "found_many": "Znaleziono wpisów: {}. Pokazano pierwsze 50. Doprecyzuj wyszukiwanie.",
+        "found_one": "Znaleziono 1 firmę",
+        "tbl_name": "Nazwa",
+        "tbl_code": "Kod",
+        "tbl_address": "Adres",
+        "tbl_status": "Status",
+        "btn_details": "Szczegóły"
+    },
+    "be": {
+        "app_title": "Рэестр кампаній Літвы",
+        "search_title": "Пошук юрыдычнай асобы",
+        "placeholder": "Увядзіце код, назву або адрас",  # Обновлено
+        "btn_find": "Шукаць",
+        "not_found": "Кампанія з кодам '{}' не знойдзена.",
+        "res_title": "Вынік пошуку",
+        "lbl_code": "Код",
+        "lbl_address": "Адрас",
+        "lbl_status": "Статус",
+        "lbl_form": "Прававая форма",
+        "lbl_reg_date": "Дата рэгістрацыі",
+        "footer": "Дадзеныя прадастаўлены Цэнтрам рэгістраў",
+        "status_active": "Дзейнічае",
+        "last_update": "Дадзеныя абноўлены ў рэестры:",
+        "lang_name": "Беларуская",
+        # --- НОВЫЕ КЛЮЧИ ---
+        "found_many": "Знойдзена запісаў: {}. Паказаны першыя 50. Удакладніце пошук.",
+        "found_one": "Знойдзена 1 кампанія",
+        "tbl_name": "Назва",
+        "tbl_code": "Код",
+        "tbl_address": "Адрас",
+        "tbl_status": "Статус",
+        "btn_details": "Падрабязней"
+    },
+    "ru": {
+        "app_title": "Реестр компаний Литвы",
+        "search_title": "Поиск юридического лица",
+        "placeholder": "Введите код, название или адрес",
+        "btn_find": "Найти",
+        "not_found": "Компания с кодом '{}' не найдена.",
+        "res_title": "Результат поиска",
+        "lbl_code": "Код",
+        "lbl_address": "Адрес",
+        "lbl_status": "Статус",
+        "lbl_form": "Правовая форма",
+        "lbl_reg_date": "Дата регистрации",
+        "footer": "Данные предоставлены ГП Центр регистров",
+        "status_active": "Действует",
+        "last_update": "Данные обновлены в реестре:",
+        "lang_name": "Русский",
+        # --- НОВЫЕ КЛЮЧИ ---
+        "found_many": "Найдено записей: {}. Показаны первые 50. Уточните поиск.",
+        "found_one": "Найдена 1 компания",
+        "tbl_name": "Название",
+        "tbl_code": "Код",
+        "tbl_address": "Адрес",
+        "tbl_status": "Статус",
+        "btn_details": "Подробнее"
+    }
+}

@@ -2,61 +2,104 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
-        
-        <div class="card p-4 mb-4">
-            <h4 class="mb-3">Поиск юридического лица</h4>
+    <div class="col-md-10"> <div class="card p-4 mb-4">
+            <h4 class="mb-3">{{ tr.search_title }}</h4>
             <form action="/" method="get" class="d-flex gap-2">
-                <input type="text" name="code" class="form-control form-control-lg" 
-                       placeholder="Введите код (например 302528185)" 
-                       value="{{ search_code if search_code else '' }}" required>
-                <button type="submit" class="btn btn-primary btn-lg">Найти</button>
+                {% if current_lang %}
+                <input type="hidden" name="lang" value="{{ current_lang }}">
+                {% endif %}
+                
+                <input type="text" name="q" class="form-control form-control-lg" 
+                       placeholder="{{ tr.placeholder }}" 
+                       value="{{ search_query if search_query else '' }}" required>
+                <button type="submit" class="btn btn-primary btn-lg">{{ tr.btn_find }}</button>
             </form>
         </div>
 
         {% if error %}
-        <div class="alert alert-danger text-center">
-            {{ error }}
-        </div>
+        <div class="alert alert-danger text-center">{{ error }}</div>
         {% endif %}
 
-        {% if company %}
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                Результат поиска
-            </div>
-            <div class="card-body">
-                <h3 class="card-title text-primary">{{ company.name }}</h3>
-                <h6 class="card-subtitle mb-2 text-muted">Код: {{ company.code }}</h6>
-                
-                <hr>
-                
-                <dl class="row">
-                    <dt class="col-sm-4">Адрес:</dt>
-                    <dd class="col-sm-8">{{ company.address }}</dd>
+        {% if companies %}
+            
+            {% if companies|length == 1 %}
+                {% set company = companies[0] %}
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        {{ tr.found_one }}
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title text-primary">{{ company.name }}</h3>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ tr.lbl_code }}: {{ company.code }}</h6>
+                        <hr>
+                        <dl class="row">
+                            <dt class="col-sm-3">{{ tr.lbl_address }}:</dt>
+                            <dd class="col-sm-9">{{ company.address }}</dd>
 
-                    <dt class="col-sm-4">Статус:</dt>
-                    <dd class="col-sm-8">
-                        {% if company.status_code == 0 %}
-                            <span class="badge bg-success">Действует</span>
-                        {% else %}
-                            <span class="badge bg-danger">{{ company.status_name }}</span>
-                        {% endif %}
-                        <small class="text-muted ms-2">(с {{ company.status_date_from }})</small>
-                    </dd>
+                            <dt class="col-sm-3">{{ tr.lbl_status }}:</dt>
+                            <dd class="col-sm-9">
+                                {% if company.status_code == 0 %}
+                                    <span class="badge bg-success">{{ tr.status_active }}</span>
+                                {% else %}
+                                    <span class="badge bg-danger">{{ company.status_name }}</span>
+                                {% endif %}
+                                <small class="text-muted ms-2">(nuo {{ company.status_date_from }})</small>
+                            </dd>
 
-                    <dt class="col-sm-4">Правовая форма:</dt>
-                    <dd class="col-sm-8">{{ company.legal_form_name }}</dd>
+                            <dt class="col-sm-3">{{ tr.lbl_form }}:</dt>
+                            <dd class="col-sm-9">{{ company.legal_form_name }}</dd>
 
-                    <dt class="col-sm-4">Дата регистрации:</dt>
-                    <dd class="col-sm-8">{{ company.registration_date }}</dd>
-                </dl>
-                
-                <div class="alert alert-light border mt-3 mb-0 text-center">
-                    <small>Данные обновлены в реестре: {{ company.data_updated_at }}</small>
+                            <dt class="col-sm-3">{{ tr.lbl_reg_date }}:</dt>
+                            <dd class="col-sm-9">{{ company.registration_date }}</dd>
+                        </dl>
+                        <div class="alert alert-light border mt-3 mb-0 text-center">
+                            <small>{{ tr.last_update }} {{ company.data_updated_at }}</small>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+
+            {% else %}
+                <div class="card">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <span>{{ tr.found_many.format(companies|length) }}</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>{{ tr.tbl_code }}</th>
+                                    <th>{{ tr.tbl_name }}</th>
+                                    <th>{{ tr.tbl_address }}</th>
+                                    <th>{{ tr.tbl_status }}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for comp in companies %}
+                                <tr>
+                                    <td><strong>{{ comp.code }}</strong></td>
+                                    <td>{{ comp.name }}</td>
+                                    <td><small>{{ comp.address }}</small></td>
+                                    <td>
+                                        {% if comp.status_code == 0 %}
+                                            <span class="badge bg-success rounded-pill">✔</span>
+                                        {% else %}
+                                            <span class="badge bg-danger rounded-pill">!</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="/?q={{ comp.code }}&lang={{ current_lang }}" class="btn btn-sm btn-outline-primary">
+                                            {{ tr.btn_details }}
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
         {% endif %}
 
     </div>
