@@ -1,6 +1,7 @@
 # company-registry-lt\app\models\company.py
 from sqlalchemy import Column, String, Integer, Date, Text
 from app.core.db import Base
+from sqlalchemy import Numeric # Добавляем Numeric для денег
 
 class Company(Base):
     """
@@ -50,6 +51,9 @@ class Company(Base):
     pvm_code = Column(String, nullable=True, index=True) 
     # С какого числа является плательщиком
     pvm_date = Column(Date, nullable=True)
+    # --- НОВЫЕ ПОЛЯ (Капитал) ---
+    authorized_capital = Column(Numeric(12, 2), nullable=True) # Например: 2500.00
+    capital_currency = Column(String(3), nullable=True)        # EUR, LTL
 
     def __repr__(self):
         return f"<Company(code='{self.code}', name='{self.name}', pvm='{self.pvm_code}')>"

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card p-4">
+        <div class="card p-4 mb-4">
             <h3 class="mb-4">⚙️ Настройки источников данных</h3>
             
             {% if message %}
@@ -11,36 +11,59 @@
             {% endif %}
 
             <form action="/settings" method="post">
-                <div class="mb-4">
+                <div class="mb-3">
                     <label class="form-label fw-bold">Ссылка на реестр (JAR)</label>
                     <input type="text" name="jar_url" class="form-control" 
                            value="{{ settings['jar_url'].value if settings['jar_url'] else '' }}">
                     <div class="form-text">CSV файл с сайта registrucentras.lt</div>
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-3">
                     <label class="form-label fw-bold">Ссылка на плательщиков НДС (VMI)</label>
                     <input type="text" name="pvm_url" class="form-control" 
                            value="{{ settings['pvm_url'].value if settings['pvm_url'] else '' }}">
-                    <div class="form-text">
-                        CSV файл с сайта VMI или data.gov.lt. <br>
-                        Текущая ошибка 404 означает, что ссылку нужно обновить вручную.
-                        <a href="https://data.gov.lt/dataset/pridetinies-vertes-mokescio-moketoju-duomenys" target="_blank">Найти новую ссылку на data.gov.lt</a>
-                    </div>
+                    <div class="form-text">Ссылка на API data.gov.lt или файл CSV.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Ссылка на Уставной капитал</label>
+                    <input type="text" name="capital_url" class="form-control" 
+                           value="{{ settings['capital_url'].value if settings['capital_url'] else '' }}">
+                    <div class="form-text">CSV файл с сайта registrucentras.lt (JAR_KAPITALAS).</div>
                 </div>
 
                 <div class="d-flex justify-content-between">
                     <a href="/" class="btn btn-secondary">Назад</a>
-                    <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+                    <button type="submit" class="btn btn-primary">💾 Сохранить ссылки</button>
                 </div>
             </form>
             
             <hr class="my-4">
             
-            <h5>Управление</h5>
-            <p>Вы можете запустить принудительное обновление базы прямо сейчас (с текущими ссылками).</p>
-            <button onclick="forceUpdate()" class="btn btn-warning">🔄 Запустить обновление данных сейчас</button>
-            <span id="updateStatus" class="ms-2 text-muted"></span>
+            <h5>Управление обновлением</h5>
+            <p class="text-muted small">Выберите, какие файлы нужно скачать заново. Если галочка снята, будет использован файл, скачанный ранее (быстро).</p>
+
+            <div class="mb-3 d-flex flex-wrap gap-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="chk_jar" checked>
+                    <label class="form-check-label" for="chk_jar">Скачать Реестр</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="chk_pvm" checked>
+                    <label class="form-check-label" for="chk_pvm">Скачать НДС</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="chk_cap" checked>
+                    <label class="form-check-label" for="chk_cap">Скачать Капитал</label>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <button onclick="forceUpdate()" class="btn btn-warning">
+                    🔄 Запустить обновление
+                </button>
+                <span id="updateStatus" class="ms-3 fw-bold text-muted"></span>
+            </div>
         </div>
     </div>
 </div>
@@ -48,16 +71,34 @@
 <script>
 async function forceUpdate() {
     const status = document.getElementById('updateStatus');
+    
+    // Считываем состояние галочек
+    const dlJar = document.getElementById('chk_jar').checked;
+    const dlPvm = document.getElementById('chk_pvm').checked;
+    const dlCap = document.getElementById('chk_cap').checked;
+
     status.innerText = "Запуск...";
+    status.className = "ms-3 fw-bold text-muted"; // Сброс цвета
+    
     try {
-        const response = await fetch('/api/v1/force-update', { method: 'POST' });
-        const data = await response.json();
-        status.innerText = "✅ " + data.message;
-        status.classList.remove('text-muted');
-        status.classList.add('text-success');
+        // Формируем URL с параметрами
+        // Python (FastAPI) автоматически преобразует true/false в булевы значения
+        const url = `/api/v1/force-update?dl_jar=${dlJar}&dl_pvm=${dlPvm}&dl_cap=${dlCap}`;
+        
+        const response = await fetch(url, { method: 'POST' });
+        
+        if (response.ok) {
+            const data = await response.json();
+            status.innerText = "✅ " + data.message;
+            status.className = "ms-3 fw-bold text-success";
+        } else {
+            status.innerText = "❌ Ошибка сервера";
+            status.className = "ms-3 fw-bold text-danger";
+        }
     } catch (e) {
-        status.innerText = "❌ Ошибка запуска";
-        status.classList.add('text-danger');
+        status.innerText = "❌ Ошибка соединения";
+        status.className = "ms-3 fw-bold text-danger";
+        console.error(e);
     }
 }
 </script>

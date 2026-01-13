@@ -61,6 +61,14 @@
 									<span class="text-muted">– {{ tr.val_not_pvm }}</span>
 								{% endif %}
 							</dd>
+							<dt class="col-sm-3">Уставной капитал:</dt>
+							<dd class="col-sm-9">
+								{% if company.authorized_capital %}
+									{{ company.authorized_capital }} {{ company.capital_currency }}
+								{% else %}
+									<span class="text-muted">–</span>
+								{% endif %}
+							</dd>
                         </dl>
                         <div class="alert alert-light border mt-3 mb-0 text-center">
                             <small>{{ tr.last_update }} {{ company.data_updated_at }}</small>

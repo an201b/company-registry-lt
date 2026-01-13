@@ -25,6 +25,11 @@ DEFAULT_SETTINGS = [
         # ОБНОВЛЕНО: Вставили рабочую ссылку data.gov.lt
         "value": "https://get.data.gov.lt/datasets/gov/vmi/pvm_moketojai/Moketoja_duomenys_pvm_moketojai.csv",
         "description": "Ссылка на плательщиков НДС (VMI)"
+    },
+    {
+        "key": "capital_url", 
+        "value": "https://www.registrucentras.lt/aduomenys/?byla=JAR_KAPITALAS.csv",
+        "description": "Ссылка на уставной капитал (JAR Kapitalas)"
     }
 ]
 
@@ -77,13 +82,20 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Ручка для принудительного обновления
 @app.post("/api/v1/force-update", tags=["Admin"])
-async def force_update_db(background_tasks: BackgroundTasks):
+async def force_update_db(
+    background_tasks: BackgroundTasks,
+    # Принимаем параметры запроса (Query Parameters)
+    dl_jar: bool = True,
+    dl_pvm: bool = True,
+    dl_cap: bool = True
+):
     """
-    Запускает обновление базы данных прямо сейчас в фоновом режиме.
+    Запускает обновление. Можно отключить скачивание файлов флагами.
     """
-    background_tasks.add_task(run_full_import)
-    return {"message": "Обновление запущено в фоне. Следите за логами."}
-
+    # Передаем параметры в функцию импорта
+    background_tasks.add_task(run_full_import, dl_jar, dl_pvm, dl_cap)
+    return {"message": "Обновление запущено. Проверьте консоль."}
+    
 # Роутеры
 app.include_router(api_router, prefix="/api/v1", tags=["API"])
 app.include_router(web_router, tags=["Web"])
